@@ -5,7 +5,7 @@ A work-in-progress from-scratch rewrite of github.com/mosbasik/rvagaming using t
 
 # To use this project:
 
-* Make sure you have at least Python 2.7 installed
+* Make sure you have at least Python 2.7 installed.
 
 * Make sure you have the Python module `virtualenv` installed (You will need to download and install this for any version of Python older than 3.4).
 
@@ -21,9 +21,9 @@ A work-in-progress from-scratch rewrite of github.com/mosbasik/rvagaming using t
   pip install virtualenv
   ```
 
-* Navigate to the directory you want the app to be in and copy/clone/whatever the `rvagaming-flask` repository into it
+* Navigate to the directory you want the app to be in and copy/clone/whatever the `rvagaming-flask` repository into it.
 
-* Within `rvagaming-flask/` create a virtual Python environment:
+* Within the `rvagaming-flask/` directory, create a virtual Python environment:
 
   * In versions of Python older than 3.4, use
 
@@ -37,9 +37,9 @@ A work-in-progress from-scratch rewrite of github.com/mosbasik/rvagaming using t
   python -m venv flask
   ```
 
-* You now have a contained Python environment in `rvagaming-flask/flask/`, and it can be called using `rvagaming-flask/flask/bin/python`
+* You now have a contained Python environment in `rvagaming-flask/flask/`.
 
-* Now we install the necessary modules in this environment:
+* Next we install the necessary modules in this environment:
 
 ```
 flask/bin/pip install flask
@@ -65,7 +65,7 @@ flask/bin/pip install coverage
   ```
 
   You can execute it with
-
+  
   ```
   ./run.py
   ```
