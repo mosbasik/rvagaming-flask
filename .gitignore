@@ -56,3 +56,7 @@ target/
 
 # Compiled bytecode
 *.pyc
+
+# Database files and folders
+*.db
+db_repository/
