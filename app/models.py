@@ -1,3 +1,5 @@
+from app import db
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     steam_id = db.Column(db.String(40))
@@ -6,7 +8,7 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % (self.nickname)
 
-    @taticmethod
+    @staticmethod
     def get_or_create(steam_id):
         rv = User.query.filter_by(steam_id=steam_id).first()
         if rv is None:
