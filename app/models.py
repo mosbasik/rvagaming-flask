@@ -10,9 +10,8 @@ class Site_User(db.Model):
 
 
 class Steam_User(db.Model):
-    # steam_user_key = db.Column(db.Integer, primary_key=True)
     steam_64      = db.Column(db.Integer, primary_key=True)
-    site_user_key = db.Column(db.Integer, db.ForeignKey('Site_User.site_user_key'))
+    site_user_key = db.Column(db.Integer, db.ForeignKey('site__user.site_user_key'))
     steam_32      = db.Column(db.Integer)
     nickname      = db.Column(db.String(80))
     is_main       = db.Column(db.Integer)
