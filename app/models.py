@@ -5,6 +5,21 @@ class Site_User(db.Model):
     site_user_key = db.Column(db.Integer, primary_key=True)
     steam_accounts = db.relationship('Steam_User', backref='owner', lazy='dynamic')
     
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+    
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        try:
+            return unicode(self.site_user_key)
+        except NameError:
+            return str(self.site_user_key)
+     
     def __repr__(self):
         return '<Site User %r>' % (self.site_user_key)
 
