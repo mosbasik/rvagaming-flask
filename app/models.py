@@ -3,16 +3,17 @@ from app import db
 
 class Site_User(db.Model):
     site_user_key = db.Column(db.Integer, primary_key=True)
+    steam_accounts = db.relationship('Steam_User', backref='owner', lazy='dynamic')
     
     def __repr__(self):
         return '<Site User %r>' % (self.site_user_key)
 
 
 class Steam_User(db.Model):
-    steam_user_key = db.Column(db.Integer, primary_key=True)
-    site_user_key = db.Column(db.Integer)
+    # steam_user_key = db.Column(db.Integer, primary_key=True)
+    steam_64      = db.Column(db.Integer, primary_key=True)
+    site_user_key = db.Column(db.Integer, db.ForeignKey('Site_User.site_user_key'))
     steam_32      = db.Column(db.Integer)
-    steam_64      = db.Column(db.Integer)
     nickname      = db.Column(db.String(80))
     is_main       = db.Column(db.Integer)
 
@@ -21,12 +22,24 @@ class Steam_User(db.Model):
 
     @staticmethod
     def get_or_create(steam_64):
-        rv = User.query.filter_by(steam_64=steam_64).first()
+        rv = Steam_User.query.filter_by(steam_64=steam_64).first()
         if rv is None:
             rv = User()
             rv.steam_64 = steam_64
+            rv.steam_32 = get_steam_32(steam_64)
             db.session.add(rv)
         return rv
+   
+    import urllib2 
+    @staticmethod
+    def get_steam_user_info(steam_64):
+        options = {
+            'key': app.config['STEAM_API_KEY'],
+            'steam_64s': steam_64
+        }
+        url = 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0001/?%s' % url_encode(options)
+        rv = json.load(urllib2.urlopen(url))
+        return rv['response']['players']['player'][0] or {}
 
     @staticmethod
     def get_steam_32(steam_64):
@@ -91,6 +104,7 @@ class Match(db.Model):
     region    = db.Column(db.Integer)
     mode      = db.Column(db.Integer)
     type      = db.Column(db.Integer)
+    outcome   = db.Column(db.String(10))
 
     def __repr__(self):
         return '<Match ID %r>' % (self.match_key)
@@ -111,3 +125,26 @@ class Team(db.Model):
     def __repr__(self):
         return '<Team %r>' % (self.team_name)
 
+
+class Region(db.Model):
+    region_key  = db.Column(db.Integer, primary_key=True)
+    region_name = db.Column(db.String(40))
+
+    def __repr__(self):
+        return '<Region %r>' % (self.region_name)
+
+
+class Mode(db.Model):
+    mode_key  = db.Column(db.Integer, primary_key=True)
+    mode_name = db.Column(db.String(40))
+
+    def __repr__(self):
+        return '<Mode %r>' % (self.mode_name)
+
+
+class Type(db.Model):
+    type_key  = db.Column(db.Integer, primary_key=True)
+    type_name = db.Column(db.String(40))
+
+    def __repr__(self):
+        return '<Type %r>' % (self.type_name)
