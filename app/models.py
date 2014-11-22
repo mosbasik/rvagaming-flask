@@ -5,6 +5,17 @@ class Site_User(db.Model):
     site_user_key = db.Column(db.Integer, primary_key=True)
     steam_accounts = db.relationship('Steam_User', backref='owner', lazy='dynamic')
     
+    def __repr__(self):
+        return '<Site User %r>' % (self.site_user_key)
+
+
+class Steam_User(db.Model):
+    steam_64      = db.Column(db.Integer, primary_key=True)
+    site_user_key = db.Column(db.Integer, db.ForeignKey('site__user.site_user_key'))
+    steam_32      = db.Column(db.Integer)
+    nickname      = db.Column(db.String(80))
+    is_main       = db.Column(db.Integer)
+    
     def is_authenticated(self):
         return True
 
@@ -16,20 +27,9 @@ class Site_User(db.Model):
 
     def get_id(self):
         try:
-            return unicode(self.site_user_key)
+            return unicode(self.steam_64)
         except NameError:
-            return str(self.site_user_key)
-     
-    def __repr__(self):
-        return '<Site User %r>' % (self.site_user_key)
-
-
-class Steam_User(db.Model):
-    steam_64      = db.Column(db.Integer, primary_key=True)
-    site_user_key = db.Column(db.Integer, db.ForeignKey('site__user.site_user_key'))
-    steam_32      = db.Column(db.Integer)
-    nickname      = db.Column(db.String(80))
-    is_main       = db.Column(db.Integer)
+            return str(self.steam_64)
 
     def __repr__(self):
         return '<Steam User %r>' % (self.nickname)
@@ -99,66 +99,65 @@ class Steam_User(db.Model):
         # print (64-32-20-4-8)*" " + str(universe_binary)
         return (steam_32, instance, acctype, universe)
 
-
-class Facebook_User(db.Model):
-    facebook_user_key = db.Column(db.Integer, primary_key=True)
-    site_user_key = db.Column(db.Integer)
-    facebook_id   = db.Column(db.Integer)
-    facebook_name = db.Column(db.String(80))
-    facebook_link = db.Column(db.String(150))
-
-    def __repr__(self):
-        return '<Facebook User %r>' % (self.facebook_name)
-
-
-class Match(db.Model):
-    match_key = db.Column(db.Integer, primary_key=True)
-    date      = db.Column(db.Integer)
-    duration  = db.Column(db.Integer)
-    region    = db.Column(db.Integer)
-    mode      = db.Column(db.Integer)
-    type      = db.Column(db.Integer)
-    outcome   = db.Column(db.String(10))
-
-    def __repr__(self):
-        return '<Match ID %r>' % (self.match_key)
-
-
-class Hero(db.Model):
-    hero_key = db.Column(db.Integer, primary_key=True)
-    hero_name = db.Column(db.String(80))
-
-    def __repr__(self):
-        return '<Hero %r>' % (self.hero_name)
-
-
-class Team(db.Model):
-    team_key  = db.Column(db.Integer, primary_key=True)
-    team_name = db.Column(db.String(80))
-
-    def __repr__(self):
-        return '<Team %r>' % (self.team_name)
-
-
-class Region(db.Model):
-    region_key  = db.Column(db.Integer, primary_key=True)
-    region_name = db.Column(db.String(40))
-
-    def __repr__(self):
-        return '<Region %r>' % (self.region_name)
-
-
-class Mode(db.Model):
-    mode_key  = db.Column(db.Integer, primary_key=True)
-    mode_name = db.Column(db.String(40))
-
-    def __repr__(self):
-        return '<Mode %r>' % (self.mode_name)
-
-
-class Type(db.Model):
-    type_key  = db.Column(db.Integer, primary_key=True)
-    type_name = db.Column(db.String(40))
-
-    def __repr__(self):
-        return '<Type %r>' % (self.type_name)
+#class Facebook_User(db.Model):
+#    facebook_user_key = db.Column(db.Integer, primary_key=True)
+#    site_user_key = db.Column(db.Integer)
+#    facebook_id   = db.Column(db.Integer)
+#    facebook_name = db.Column(db.String(80))
+#    facebook_link = db.Column(db.String(150))
+#
+#    def __repr__(self):
+#        return '<Facebook User %r>' % (self.facebook_name)
+#
+#
+#class Match(db.Model):
+#    match_key = db.Column(db.Integer, primary_key=True)
+#    date      = db.Column(db.Integer)
+#    duration  = db.Column(db.Integer)
+#    region    = db.Column(db.Integer)
+#    mode      = db.Column(db.Integer)
+#    type      = db.Column(db.Integer)
+#    outcome   = db.Column(db.String(10))
+#
+#    def __repr__(self):
+#        return '<Match ID %r>' % (self.match_key)
+#
+#
+#class Hero(db.Model):
+#    hero_key = db.Column(db.Integer, primary_key=True)
+#    hero_name = db.Column(db.String(80))
+#
+#    def __repr__(self):
+#        return '<Hero %r>' % (self.hero_name)
+#
+#
+#class Team(db.Model):
+#    team_key  = db.Column(db.Integer, primary_key=True)
+#    team_name = db.Column(db.String(80))
+#
+#    def __repr__(self):
+#        return '<Team %r>' % (self.team_name)
+#
+#
+#class Region(db.Model):
+#    region_key  = db.Column(db.Integer, primary_key=True)
+#    region_name = db.Column(db.String(40))
+#
+#    def __repr__(self):
+#        return '<Region %r>' % (self.region_name)
+#
+#
+#class Mode(db.Model):
+#    mode_key  = db.Column(db.Integer, primary_key=True)
+#    mode_name = db.Column(db.String(40))
+#
+#    def __repr__(self):
+#        return '<Mode %r>' % (self.mode_name)
+#
+#
+#class Type(db.Model):
+#    type_key  = db.Column(db.Integer, primary_key=True)
+#    type_name = db.Column(db.String(40))
+#
+#    def __repr__(self):
+#        return '<Type %r>' % (self.type_name)

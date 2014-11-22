@@ -13,26 +13,26 @@ def load_user(id):
 @app.route('/')
 @app.route('/index')
 def index():
-#    user = {'nickname': 'marseilles'}
-#    members = [{
-#                    'fbname': 'Joshua Manu',
-#                    'stname': 'redsurfable',
-#                    'dbid': '0',
-#                    'lastseen': '7 months ago',
-#                },
-#                {
-#                    'fbname': 'Christopher Poenaru',
-#                    'stname': 'Swambulance',
-#                    'dbid': '0',
-#                    'lastseen': '7 months ago',
-#                },
-#                {
-#                    'fbname': 'Sam Cho',
-#                    'stname': 'Mikasa',
-#                    'dbid': '0',
-#                    'lastseen': '7 months ago',
-#                }]
-    return render_template('index.html', title='Home', user=user, members=members)
+    user = {'nickname': 'marseilles'}
+    Steam_Users = [{
+                       'nickname': 'redsurfable',
+                       'steam_64': '76561198047777536',
+                       'steam_32': '87511808',
+                       'is_main': '1',
+                   },
+                   {
+                       'nickname': 'mos_basik',
+                       'steam_64': '76561198062133508',
+                       'steam_32': '101867780',
+                       'is_main': '1',
+                   },
+                   {
+                       'nickname': 'Swambulance',
+                       'steam_64': '76561198027956481',
+                       'steam_32': '67690753',
+                       'is_main': '1',
+                   }]
+    return render_template('index.html', title='Home', user=user, Steam_Users=Steam_Users)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -43,8 +43,8 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         session['remember_me'] = form.remember_me.data
-        return oid.try_login(form.openid.data, ask_for=['nickname','email'])
-    return render_template('login.html', 
+        return oid.try_login(form.openid.data, ask_for=['nickname'])
+    return render_template('login.html',
                            title='Sign In',
                            form=form,
                            providers=app.config['OPENID_PROVIDERS'])
@@ -56,5 +56,5 @@ def after_login(resp):
         flash('Invalid login.  Please try again.')
         return redirect(url_for('login'))
     user = User.query.filter_by(email=resp.email).first()
-    if user = None:
+    if user == None:
         nickname = resp.nickname

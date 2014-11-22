@@ -2,12 +2,12 @@
 
 {% block content %}
     <h1>Hi, {{ user.nickname }}!</h1>
-    {% for member in members %}
+    {% for Steam_User in Steam_Users %}
         <div>
-            {{ member.fbname }}
-            {{ member.stname }}
-            {{ member.dbid }}
-            {{ member.lastseen }}
+            {{ Steam_User.nickname }}<br>
+            {{ Steam_User.steam_64 }}<br>
+            {{ Steam_User.steam_32 }}<br>
+            {{ Steam_User.is_main }}<br>
         </div>
     {% endfor %}
 {% endblock %}
